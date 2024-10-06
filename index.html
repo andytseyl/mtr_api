@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MTR Real-time</title>
+    <link rel="icon" type="image/x-icon" href="./HK_MTR_logo.png" />
+    <script src="mtr.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ktlc: "#7ed957",
+              islc: "#004aad",
+              twlc: "#ff3131",
+              silc: "#cbcd09",
+              tclc: "#f6943d",
+              ealc: "#5ce1e6",
+              tmlc: "#8d6019",
+              aelc: "#3d9ea0",
+              tklc: "#8d45ab",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="mx-auto font-sans">
+    <h1
+      class="flex justify-center font-bold text-3xl my-8 underline decoration-4 decoration-sky-500"
+    >
+      港鐵列車即時資訊
+    </h1>
+    <div class="flex justify-center flex-wrap mb-10">
+      <div
+        class="border-4 bg-ktlc p-5 rounded-xl m-4 font-semibold text-white"
+        id="ktl"
+      >
+        觀塘線
+      </div>
+      <div
+        class="border-4 bg-islc p-5 rounded-xl m-4 font-semibold text-white"
+        id="isl"
+      >
+        港島線
+      </div>
+      <div
+        class="border-4 bg-twlc p-5 rounded-xl m-4 font-semibold text-white"
+        id="twl"
+      >
+        荃灣線
+      </div>
+      <div
+        class="border-4 bg-silc p-5 rounded-xl m-4 font-semibold text-white"
+        id="sil"
+      >
+        南港島線
+      </div>
+      <div
+        class="border-4 bg-tclc p-5 rounded-xl m-4 font-semibold text-white"
+        id="tcl"
+      >
+        東涌線
+      </div>
+      <div
+        class="border-4 bg-ealc p-5 rounded-xl m-4 font-semibold text-white"
+        id="eal"
+      >
+        東鐵線
+      </div>
+      <div
+        class="border-4 bg-tmlc p-5 rounded-xl m-4 font-semibold text-white"
+        id="tml"
+      >
+        屯馬線
+      </div>
+      <div
+        class="border-4 bg-aelc p-5 rounded-xl m-4 font-semibold text-white"
+        id="ael"
+      >
+        機場快線
+      </div>
+      <div
+        class="border-4 bg-tklc p-5 rounded-xl m-4 font-semibold text-white"
+        id="tkl"
+      >
+        將軍澳線
+      </div>
+    </div>
+    <div class="flex justify-center mb-4" id="lastUpdateTime"></div>
+
+    <div class="flex justify-center">
+      <div class="flex justify-evenly w-full">
+        <div id="containerLeft" class=""></div>
+        <div id="containerRight" class=""></div>
+      </div>
+    </div>
+  </body>
+</html>
