@@ -181,12 +181,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch(api);
       const result = await response.json();
 
-      if (result.data && result.data[`${line}-${sta}`]) {
-        const upInfo = result.data[`${line}-${sta}`].UP[0];
-        const downInfo = result.data[`${line}-${sta}`].DOWN[0];
-        const systime = result.sys_time;
+      let returnData = {};
 
-        return { upInfo, downInfo, systime };
+      if (result.data && result.data[`${line}-${sta}`]) {
+        returnData.systime = result.sys_time;
+        if (result.data[`${line}-${sta}`].UP) {
+          returnData.upInfo = result.data[`${line}-${sta}`].UP[0];
+        }
+        if (result.data[`${line}-${sta}`].DOWN) {
+          returnData.downInfo = result.data[`${line}-${sta}`].DOWN[0];
+        }
+
+        return returnData;
       }
     } catch (error) {
       console.error("Error data:", error);
@@ -217,17 +223,6 @@ document.addEventListener("DOMContentLoaded", function () {
           lastUpdateTime = systime;
         }
 
-        const stationName = line.sta.find(
-          (station) => station.code === code
-        ).name;
-
-        const upStaName = line.sta.find(
-          (station) => station.code === upInfo.dest
-        ).name;
-        const downStaName = line.sta.find(
-          (station) => station.code === downInfo.dest
-        ).name;
-
         function formatTime(timeString) {
           const date = new Date(timeString);
           const hours = String(date.getHours()).padStart(2, "0");
@@ -235,31 +230,43 @@ document.addEventListener("DOMContentLoaded", function () {
           return `${hours}:${minutes}`;
         }
 
-        const upTime = formatTime(upInfo.time);
-        const downTime = formatTime(downInfo.time);
+        const stationName = line.sta.find(
+          (station) => station.code === code
+        ).name;
 
-        const newDiv1 = document.createElement("div");
-        newDiv1.className =
-          "font-semibold bg-green-400 rounded-xl border-4 flex flex-col text-white leading-loose p-4 h-40 min-w-56 mb-10";
-        newDiv1.innerHTML = `
+        if (upInfo) {
+          const upStaName = line.sta.find(
+            (station) => station.code === upInfo.dest
+          ).name;
+          const upTime = formatTime(upInfo.time);
+          const newDiv1 = document.createElement("div");
+          newDiv1.className =
+            "font-semibold bg-green-400 rounded-xl border-4 flex flex-col text-white leading-loose p-4 h-40 min-w-56 mb-10";
+          newDiv1.innerHTML = `
         <h3>現時在 ${stationName}</h3>
         <p>想往${upStaName}方向</p>
         <p>請去月台: ${upInfo.plat}</p> 
         <p>下班列車到達時間: ${upTime}</p> 
-        
         `;
-        infoContainerLeft.appendChild(newDiv1);
+          infoContainerLeft.appendChild(newDiv1);
+        }
 
-        const newDiv2 = document.createElement("div");
-        newDiv2.className =
-          "font-semibold bg-blue-400 rounded-xl border-4 flex flex-col text-white leading-loose p-4 h-40 min-w-56 mb-10";
-        newDiv2.innerHTML = `
+        if (downInfo) {
+          const downStaName = line.sta.find(
+            (station) => station.code === downInfo.dest
+          ).name;
+          const downTime = formatTime(downInfo.time);
+          const newDiv2 = document.createElement("div");
+          newDiv2.className =
+            "font-semibold bg-blue-400 rounded-xl border-4 flex flex-col text-white leading-loose p-4 h-40 min-w-56 mb-10";
+          newDiv2.innerHTML = `
         <h3>現時在 ${stationName}</h3>
         <p>想往 ${downStaName}方向</p>
         <p>請去月台: ${downInfo.plat}</p>
         <p>下班列車到達時間: ${downTime}</p>
         `;
-        infoContainerRight.appendChild(newDiv2);
+          infoContainerRight.appendChild(newDiv2);
+        }
       }
     }
     const updateTimeDiv = document.createElement("div");
